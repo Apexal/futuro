@@ -10,6 +10,7 @@ const fs = require('fs');
 const recursiveReadSync = require('recursive-readdir-sync');
 const session = require('express-session');
 const config = require('./server/config.js');
+const package = require('./package.json');
 
 const mongodb = require('./server/modules/mongodb.js');
 
@@ -44,6 +45,7 @@ for (var h in helpers) {
 
 // ALL REQUESTS PASS THROUGH HERE FIRST
 app.locals.defaultTitle = 'App Name';
+app.locals.appDescription = package.description;
 app.use((req, res, next) => {
     res.locals.pageTitle = app.locals.defaultTitle;
     res.locals.pagePath = req.path;
