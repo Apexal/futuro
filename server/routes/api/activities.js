@@ -19,18 +19,36 @@ router.get('/events', (req, res, next) => {
     .then((activities) => {
       console.log(activities);
       const events = activities.map((a) => {
-        return {
+        let date = moment(a.date);
+
+        let data =  {
           id: a.id,
+          date: date,
           title: a.summary,
-          start: a.date,
-          end: a.date,
-          allDay: true,
           url: `/days/${moment(a.date, true).format('YYYY-MM-DD')}`,
           classsName: `activity activity-${a.value}`
+        };
+
+        if(!!a.startTime && !!a.endTime) {
+          const start = moment(a.startTime, 'hh:mm a');
+          const end = moment(a.endTime, 'hh:mm a');
+
+          if(start.isValid() && end.isValid()){
+            start.set({ 'year': date.get('year'), 'month': date.get('month'), 'day': date.get('day') });
+            end.set({ 'year': date.get('year'), 'month': date.get('month'), 'day': date.get('day') });
+            
+            data.start = start;
+            data.end = end;
+          }
+        } else {
+          data.allDay = true;
         }
+
+        return data;
       });
       res.json(events);
     }).catch((err) => {
+      console.error(err);
       return res.json({ err: err });
     });
 });
@@ -73,7 +91,13 @@ router.put('/:date', (req, res, next) => {
 
   if(!summary) return next('Missing data!');
 
-  const newActivity = new req.db.Activity({ date: date, summary: summary, description: description});
+  let data = { date: date, summary: summary, description: description};
+  if(!!req.body.startTime && !!req.body.endTime) {
+    data.startTime = req.body.startTime;
+    data.endTime = req.body.endTime;  
+  }
+
+  const newActivity = new req.db.Activity(data);
 
   newActivity.save((err) => {
     if(err) return next('Missing data!');

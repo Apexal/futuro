@@ -35,13 +35,7 @@ const activityApp = new Vue({
     }, response => {
       alert('Error! ' + response.body.error);
     });
-    
-    // Set up the day specific calendar
-    $('#day-agenda .calendar').fullCalendar({
-      eventSources: ['/api/activities/events'],
-      defaultDate: date,
-      defaultView: 'agendaDay'
-    });
+
   },
   methods: {
     toggleAgenda: function() {
@@ -74,4 +68,11 @@ const activityApp = new Vue({
       });
     }
   }
+});
+
+// Set up the day specific calendar
+$('#day-agenda .calendar').fullCalendar({
+  eventSources: ['/api/activities/events'],
+  defaultDate: date,
+  defaultView: 'agendaDay'
 });
