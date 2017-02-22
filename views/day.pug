@@ -16,5 +16,5 @@ block content
         .calendar
     .row
       hr
-      button.right(@click='showAgenda = !showAgenda') {{ showAgenda ? 'Hide' : 'Show' }} Agenda
+      button.right(@click='toggleAgenda') {{ showAgenda ? 'Hide' : 'Show' }} Agenda
       a.button(href='/') Back

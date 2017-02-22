@@ -26,7 +26,7 @@ const activityApp = new Vue({
   data: {
     activities: [], // This will store all the days activities
     newActivity: {}, // Placeholder for the form to add new activities
-    showAgenda: false
+    showAgenda: localStorage.getItem('showAgenda') == 'true' 
   },
   beforeCreate: function() {
     // Before the element is rendered get the proper data
@@ -44,6 +44,10 @@ const activityApp = new Vue({
     });
   },
   methods: {
+    toggleAgenda: function() {
+      this.showAgenda = !this.showAgenda;
+      localStorage.setItem('showAgenda', this.showAgenda.toString());
+    },
     addActivity: function(event) {
       event.preventDefault(); // Prevent the form from being submitted
 
