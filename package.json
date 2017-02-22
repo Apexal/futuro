@@ -1,5 +1,5 @@
 {
-  "name": "app_name",
+  "name": "futuro",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -18,7 +18,7 @@
     "recursive-readdir-sync": "^1.0.6",
     "serve-favicon": "~2.3.0"
   },
-  "description": "A short description of the app.",
+  "description": "A personal daily activity logger.",
   "main": "./bin/www",
   "devDependencies": {},
   "repository": {
