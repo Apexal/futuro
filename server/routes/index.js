@@ -3,12 +3,8 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
+  //new req.db.Activity({ id: 2, description: 'Make this website!', value: 1, date: new Date() }).save();
   res.render('index');
-});
-
-router.get('/about', (req, res, next) => {
-  res.locals.pageTitle = 'About';
-  res.render('about');
 });
 
 module.exports = router;

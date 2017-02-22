@@ -13,22 +13,24 @@ html
       title= defaultTitle
     
     link(rel='stylesheet', href='/stylesheets/style.css')
-    //link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css')
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css')
     //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css')
 
   body
-    header
-      include /includes/header
+    .container
+      header
+        include /includes/header
 
-    main
-      block content
-    
-    footer
-      include /includes/footer
+      main
+        block content
+      
+      footer
+        include /includes/footer
     
     script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js')
     script(src='https://code.jquery.com/jquery-3.1.1.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js')
-
+    script(src='https://unpkg.com/vue@2.1.10/dist/vue.js')
+    script(src='https://cdn.jsdelivr.net/vue.resource/1.2.0/vue-resource.min.js')
     script(src='/javascripts/index.js')

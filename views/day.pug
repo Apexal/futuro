@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .row
+    #activities
+      .seven.columns
+        ol
+          activity(v-for='a in activities', :activity='a')
+      .five.columns
+        form#add-activity
+          .row
+            label(for='summary') Activity Summary
+            input#summary(type='text', name='summary', placeholder='What did you do today?')
+          .row
+            label(for='description') Activity Description
+            textarea#description(placeholder='Why?')
+          .row
+            button.button-primary(type='button') Add
+  .row
+    hr
+    a.button(href='/') Back
