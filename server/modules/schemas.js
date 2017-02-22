@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 module.exports = {
     Activity: {
         date: { type: Date, required: true },
-        summary: { type: String, required: true },
+        summary: String,
         description: String,
         value: { type: Number, default: 0 }
     }

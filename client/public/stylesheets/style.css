@@ -1,3 +1,30 @@
 body {
     padding-top: 50px;
 }
+
+.status {
+    color: grey;
+}
+
+#summary, #description {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 300px;
+}
+
+.activity .summary {
+    font-size: 1.3em;
+}
+
+.activity .description {
+    /* display: none; */
+    font-style: italic;
+    color: grey;
+    width: 100%;
+}
+/*
+.activity .summary:hover + .description{
+    display: initial;
+}
+*/
