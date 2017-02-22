@@ -6,7 +6,7 @@ block content
       .seven.columns
         ol
           i.status(v-if='activities.length == 0') No activities logged for today!
-          activity(v-else, v-for='a in activities', :activity='a')
+          activity(v-else, v-for='a in activities', :activity='a', @remove='removeActivity')
       .five.columns
         form#add-activity(@submit="addActivity")
           .row

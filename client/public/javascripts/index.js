@@ -12,7 +12,12 @@ const date = window.location.href.split('/')[4].split('?')[0];
 
 Vue.component('activity', {
   props: ['activity'],
-  template: '<li class="activity"><span class="summary">{{ activity.summary }}</span><div class="description">{{ activity.description }}</div></li>'
+  template: '<li class="activity"><span @click="remove(activity)" class="summary">{{ activity.summary }}</span><div class="description">{{ activity.description }}</div></li>',
+  methods: {
+    remove: function(a) {
+      this.$emit('remove', a);
+    }
+  }
 });
 
 /* The main app */
@@ -42,6 +47,14 @@ const activityApp = new Vue({
       });
 
       this.newActivity = { summary: '', description: '' }; // Reset the placeholder (also clears form)
+    },
+    removeActivity: function(a) {
+      this.$http.delete('/api/activities/' + date, {body: { _id: a._id }}).then(response => {
+        const index = this.activities.indexOf(a);
+        this.activities.splice(index, 1);
+      }, response => {
+        alert('Error! ' + response.body.error);
+      });
     }
   }
 });

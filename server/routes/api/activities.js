@@ -81,4 +81,27 @@ router.put('/:date', (req, res, next) => {
   });
 });
 
+router.delete('/:date', (req, res, next) => {
+  // Take forever to validate the date query
+  const dateString = res.locals.dateString = req.params.date;
+  
+  res.locals.isToday = (dateString == moment().format("YYYY-MM-DD"));
+
+  if(!moment(dateString, 'YYYY-MM-DD', true).isValid()) return next('Invalid date!');
+
+  var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
+  // ----------------------- Finally done
+  
+  console.log(req.body);
+  const activityId = req.body._id;
+
+  if(!activityId) return next('Missing data!');
+
+  req.db.Activity.findOne({ date: date, _id: activityId }).remove().exec().then(() => {
+    res.json({ success: true });
+  }).catch((err) => {
+    return res.json({ err: err });
+  });
+});
+
 module.exports = router;
