@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  .row
-    #activities
+  #activities
+    .row
       .seven.columns
         i.status(v-show='activities.length > 0') {{ activities.length }} total
         ol
@@ -10,6 +10,11 @@ block content
           activity(v-else, v-for='a in activities', :activity='a', @remove='removeActivity')
       .five.columns
         include /includes/activityForm
-  .row
-    hr
-    a.button(href='/') Back
+    .row
+      #day-agenda(v-show='showAgenda')
+        hr
+        .calendar
+    .row
+      hr
+      button.right(@click='showAgenda = !showAgenda') {{ showAgenda ? 'Hide' : 'Show' }} Agenda
+      a.button(href='/') Back

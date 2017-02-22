@@ -1,3 +1,4 @@
+
 $(() => {
   $('.event-calendar').fullCalendar({
     eventSources: ['/api/activities/events'],
@@ -9,7 +10,6 @@ $(() => {
 });
 
 const date = window.location.href.split('/')[4].split('?')[0];
-
 Vue.component('activity', {
   props: ['activity'],
   template: '<li class="activity"><span @click="remove(activity)" class="summary">{{ activity.summary }}</span><div class="description">{{ activity.description }}</div></li>',
@@ -25,7 +25,8 @@ const activityApp = new Vue({
   el: '#activities',
   data: {
     activities: [], // This will store all the days activities
-    newActivity: {} // Placeholder for the form to add new activities
+    newActivity: {}, // Placeholder for the form to add new activities
+    showAgenda: false
   },
   beforeCreate: function() {
     // Before the element is rendered get the proper data
@@ -33,6 +34,13 @@ const activityApp = new Vue({
       this.activities = response.body;
     }, response => {
       alert('Error! ' + response.body.error);
+    });
+    
+    // Set up the day specific calendar
+    $('#day-agenda .calendar').fullCalendar({
+      eventSources: ['/api/activities/events'],
+      defaultDate: date,
+      defaultView: 'agendaDay'
     });
   },
   methods: {
@@ -42,6 +50,7 @@ const activityApp = new Vue({
       // Sends the new activity to the server and (if successful) gets it back and its it to the list
       this.$http.put('/api/activities/' + date, this.newActivity).then(response => {
         this.activities.push(response.body);
+        $('#day-agenda .calendar').fullCalendar( 'refetchEventSources', ['/api/activities/events'] );
       }, response => {
         alert('Error! ' + response.body.error);
       });
@@ -54,6 +63,8 @@ const activityApp = new Vue({
       this.$http.delete('/api/activities/' + date, {body: { _id: a._id }}).then(response => {
         const index = this.activities.indexOf(a);
         this.activities.splice(index, 1);
+
+        $('#day-agenda .calendar').fullCalendar( 'refetchEventSources', ['/api/activities/events'] );
       }, response => {
         alert('Error! ' + response.body.error);
       });
