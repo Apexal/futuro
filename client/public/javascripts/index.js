@@ -49,6 +49,8 @@ const activityApp = new Vue({
       this.newActivity = { summary: '', description: '' }; // Reset the placeholder (also clears form)
     },
     removeActivity: function(a) {
+      if(!confirm(`Are you sure you want to delete "${a.summary}"?`)) return;
+      
       this.$http.delete('/api/activities/' + date, {body: { _id: a._id }}).then(response => {
         const index = this.activities.indexOf(a);
         this.activities.splice(index, 1);
