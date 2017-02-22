@@ -2,6 +2,19 @@ body {
     padding-top: 50px;
 }
 
+.right { float: right; }
+.left { float: left; }
+
+
+h1[title='Futuro'] {
+    font-size: 5em;
+}
+
+h1 > small {
+    font-size: 0.2em;
+    color: grey;
+}
+
 .status {
     color: grey;
 }

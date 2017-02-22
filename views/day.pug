@@ -4,8 +4,9 @@ block content
   .row
     #activities
       .seven.columns
+        i.status(v-show='activities.length > 0') {{ activities.length }} total
         ol
-          i.status(v-if='activities.length == 0') No activities logged for today!
+          i.status(v-if='activities.length == 0') No activities logged for this day!
           activity(v-else, v-for='a in activities', :activity='a', @remove='removeActivity')
       .five.columns
         form#add-activity(@submit="addActivity")
