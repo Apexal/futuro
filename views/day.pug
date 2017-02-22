@@ -9,15 +9,7 @@ block content
           i.status(v-if='activities.length == 0') No activities logged for this day!
           activity(v-else, v-for='a in activities', :activity='a', @remove='removeActivity')
       .five.columns
-        form#add-activity(@submit="addActivity")
-          .row
-            label(for='summary') Activity Summary
-            input#summary(type='text', name='summary', v-model='newActivity.summary', placeholder='What did you do today?', required)
-          .row
-            label(for='description') Activity Description
-            textarea#description(placeholder='Why?', v-model='newActivity.description')
-          .row
-            button.button-primary Add
+        include /includes/activityForm
   .row
     hr
     a.button(href='/') Back
