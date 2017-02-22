@@ -11,7 +11,7 @@ h1[title='Futuro'] {
 }
 
 h1 > small {
-    font-size: 0.2em;
+    font-size: 30%;
     color: grey;
 }
 
