@@ -1,7 +1,18 @@
-# Futuro
-For what is to come.
+# futuro
 
-# Planned Features
-- Main calendar view with summaries
-- Day specific pages to view/edit daily activities
-- Stat tracking
+> For what is to be.
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+```
+
+For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

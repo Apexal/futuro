@@ -10,5 +10,11 @@ module.exports = {
         summary: String,
         description: String,
         value: { type: Number, default: 0 }
+    },
+    Reflection: {
+        date: { type: Date, required: true },
+        title: String,
+        description: { type: String, required: true },
+        tags: { type: Array, default: [] }
     }
 };

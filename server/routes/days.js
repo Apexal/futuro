@@ -16,7 +16,7 @@ router.get('/:date', (req, res, next) => {
     return next('Invalid date!');
 
   var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
-  res.locals.pageTitle = date.format('dddd, MMM Do YY');
+  res.locals.pageTitle = date.format('');
   
   res.render('day');
 });

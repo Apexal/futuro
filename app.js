@@ -33,7 +33,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true, maxAge: 1000 * 60 * 60 * 5 }
 }))
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'dist/assets')));
 
 // View helper methods
 app.locals.helpers = {};
@@ -81,7 +81,7 @@ app.use((req, res, next) => {
 // Error handler
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-
+    console.error(err);
     if(req.originalUrl.indexOf('/api/') > -1) return res.json({error: err});
     // set locals, only providing error in development
     res.locals.message = err.message;
