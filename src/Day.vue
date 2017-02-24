@@ -2,8 +2,8 @@
   <div id="day">
     <div class="row">
       <router-link class="button right" :to="nextDateURL">Next</router-link>
-      <router-link v-show="!isToday" class="button button=primary right" :to="todayURL">Today</router-link>
       <router-link class="button right" :to="prevDateURL">Prev</router-link>
+      <router-link v-show="!isToday" class="button button=primary right" :to="todayURL">Today</router-link>
       <h1>{{ formattedDate }}</h1>
       <hr>
     </div>
