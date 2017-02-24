@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       <textarea class="reflection-editor" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
-      <p v-else v-html="reflectionHTML" :class="'reflection' + (reflection ? '' : ' none')" @click="editingReflection = !editingReflection"></p>
+      <p v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></p>
 
       <hr>
     </div>
@@ -64,7 +64,7 @@ export default {
   components: { 'activity': Activity },
   computed: {
     reflectionHTML: function() {
-      return (this.reflection ? markdown.toHTML(this.reflection.description) : 'Click to add reflection.');
+      return (!this.reflection || !this.reflection.description ? 'Click to add reflection.' : markdown.toHTML(this.reflection.description));
     },
     formattedDate: function() {
       return moment(this.$route.params.date, 'YYYY-MM-DD', true).format('dddd, MMM Do YY');
@@ -92,6 +92,7 @@ export default {
 
       this.$http.get('/api/reflections/' + this.$route.params.date).then(response => {
         this.reflection = response.body.reflection;
+        if(!this.reflection) this.reflection = {description: ''};
       }, response => {
         alert('Error! ' + response.body.error);
       });
@@ -123,6 +124,7 @@ export default {
       });
     },
     updateReflection: function(event) {
+      if(!this.reflection.description) return;
       this.$http.post('/api/reflections/' + this.$route.params.date, { reflection: this.reflection }).then(response => {
         this.reflection = response.body.reflection;
       }, response => {
