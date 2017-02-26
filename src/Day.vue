@@ -8,7 +8,7 @@
       <hr>
     </div>
     <div class="row">
-      <textarea class="reflection-editor" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
+      <textarea class="reflection-editor" placeholder="Markdown is supported!" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
       <p v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></p>
 
       <hr>
@@ -125,7 +125,7 @@ export default {
     },
     updateReflection: function(event) {
       this.$http.post('/api/reflections/' + this.$route.params.date, { reflection: this.reflection }).then(response => {
-        if (response.body.succes)
+        if(response.body.success)
           this.reflection = {description: ''};
         else
           this.reflection = response.body.reflection;
