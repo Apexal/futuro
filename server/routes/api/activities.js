@@ -17,35 +17,28 @@ router.get('/events', (req, res, next) => {
     .lean()
     .exec()
     .then((activities) => {
-      console.log(activities);
-      const events = activities.map((a) => {
-        let date = moment(a.date);
+      let events = [];
+      let days = {};
 
-        let data =  {
-          id: a.id,
-          date: date,
-          title: a.summary,
-          url: `/days/${moment(a.date, true).format('YYYY-MM-DD')}`,
-          classsName: `activity activity-${a.value}`
-        };
-
-        if(!!a.startTime && !!a.endTime) {
-          const start = moment(a.startTime, 'hh:mm a');
-          const end = moment(a.endTime, 'hh:mm a');
-
-          if(start.isValid() && end.isValid()){
-            start.set({ 'year': date.get('year'), 'month': date.get('month'), 'day': date.get('day') });
-            end.set({ 'year': date.get('year'), 'month': date.get('month'), 'day': date.get('day') });
-            
-            data.start = start;
-            data.end = end;
-          }
-        } else {
-          data.allDay = true;
-        }
-
-        return data;
+      activities.forEach((a) => {
+        if(!days[a.date]) days[a.date] = [];
+        days[a.date].push(a);
       });
+
+      for(let date in days) {
+        const dayAssignments = days[date];
+        
+        events.push({
+          title: `${dayAssignments.length} activities`,
+          start: moment(date),
+          color: 'green',
+          allDay: true,
+          url: `#/days/${moment(date).format('YYYY-MM-DD')}`
+        });
+      }
+
+      console.log(activities);
+      
       res.json(events);
     }).catch((err) => {
       console.error(err);
