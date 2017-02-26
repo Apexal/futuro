@@ -36,8 +36,6 @@ router.get('/events', (req, res, next) => {
           url: `#/days/${moment(date).format('YYYY-MM-DD')}`
         });
       }
-
-      console.log(activities);
       
       res.json(events);
     }).catch((err) => {
@@ -48,34 +46,29 @@ router.get('/events', (req, res, next) => {
 
 router.get('/:date', (req, res, next) => {
   const dateString = res.locals.dateString = req.params.date;
-  
-  res.locals.isToday = (dateString == moment().format("YYYY-MM-DD"));
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid())
     return next('Invalid date!');
 
-  var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
+  var date = moment(dateString, 'YYYY-MM-DD', true);
   
   req.db.Activity.find({ date: date })
     .lean()
     .exec()
-    .then((activities) => {
-      console.log(activities);
+    .then(activities => {
       res.json(activities);
-    }).catch((err) => {
+    }).catch(err => {
       return res.json({ err: err });
     });
 });
 
 router.put('/:date', (req, res, next) => {
   // Take forever to validate the date query
-  const dateString = res.locals.dateString = req.params.date;
-  
-  res.locals.isToday = (dateString == moment().format("YYYY-MM-DD"));
+  const dateString = req.params.date;
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid()) return next('Invalid date!');
 
-  var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
+  var date = moment(dateString, 'YYYY-MM-DD', true);
   // ----------------------- Finally done
   
    
@@ -92,7 +85,7 @@ router.put('/:date', (req, res, next) => {
 
   const newActivity = new req.db.Activity(data);
 
-  newActivity.save((err) => {
+  newActivity.save(err => {
     if(err) return next('Missing data!');
     return res.json(newActivity);
   });
@@ -101,22 +94,19 @@ router.put('/:date', (req, res, next) => {
 router.delete('/:date', (req, res, next) => {
   // Take forever to validate the date query
   const dateString = res.locals.dateString = req.params.date;
-  
-  res.locals.isToday = (dateString == moment().format("YYYY-MM-DD"));
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid()) return next('Invalid date!');
 
-  var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
+  var date = moment(dateString, 'YYYY-MM-DD', true);
   // ----------------------- Finally done
   
-  console.log(req.body);
   const activityId = req.body._id;
 
   if(!activityId) return next('Missing data!');
 
   req.db.Activity.findOne({ date: date, _id: activityId }).remove().exec().then(() => {
     res.json({ success: true });
-  }).catch((err) => {
+  }).catch(err => {
     return res.json({ err: err });
   });
 });

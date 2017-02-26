@@ -4,9 +4,17 @@
       <router-link class="button right" :to="nextDateURL">Next</router-link>
       <router-link class="button right" :to="prevDateURL">Prev</router-link>
       <router-link v-show="!isToday" class="button button=primary right" :to="todayURL">Today</router-link>
-      <h1>{{ formattedDate }}</h1>
+      <h1 :data-rating="rating">{{ formattedDate }}</h1>
+      <hr :class="{ 'past-or-present' : pastOrPresent }">
+    </div>
+
+    <div class="row ratings" v-if="pastOrPresent">
+      <p>
+        <button v-for="r in ratings" :class="rating == r ? 'button-primary' : ''" @click="updateRating(r)">{{ r }}</button>
+      </p>
       <hr>
     </div>
+
     <div class="row">
       <textarea class="reflection-editor" placeholder="Markdown is supported!" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
       <p v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></p>
@@ -58,13 +66,19 @@ export default {
       reflection: {
         description: ''
       },
+      rating: null,
+      ratings: ['Horrible', 'Bad', 'Okay', 'Good', 'Great'],
       editingReflection: false
     };
   },
   components: { 'activity': Activity },
   computed: {
+    pastOrPresent: function() {
+      return moment(this.$route.params.date, 'YYYY-MM-DD').isSameOrBefore(moment().startOf('day'));
+    },
     reflectionHTML: function() {
-      return (!this.reflection || !this.reflection.description ? 'Click to add reflection.' : markdown.toHTML(this.reflection.description));
+      const placeholder = this.rating ? `Why was this a ${this.rating.toLowerCase()} day?` : 'Click to add reflection.';
+      return (!this.reflection || !this.reflection.description ? placeholder : markdown.toHTML(this.reflection.description));
     },
     formattedDate: function() {
       return moment(this.$route.params.date, 'YYYY-MM-DD', true).format('dddd, MMM Do YY');
@@ -84,6 +98,12 @@ export default {
   },
   methods: {
     fetchData: function() {
+      this.$http.get('/api/ratings/' + this.$route.params.date).then(response => {
+        if (response.body.rating) this.rating = this.ratings[response.body.rating.value - 1];
+      }, response => {
+        alert('Error! ' + response.body.error);
+      });
+
       this.$http.get('/api/activities/' + this.$route.params.date).then(response => {
         this.activities = response.body;
       }, response => {
@@ -136,6 +156,17 @@ export default {
     doneEditingReflection: function(event) {
       this.editingReflection = false;
       this.updateReflection();
+    },
+    updateRating: function(r) {
+      const value = ( r !== this.rating ? this.ratings.indexOf(r) + 1 : null );
+      this.$http.post('/api/ratings/' + this.$route.params.date, { rating: { value } }).then(response => {
+        if(response.body.success)
+          this.rating = null;
+        else
+          this.rating = r;
+      }, response => {
+        alert('Error! ' + response.body.error);
+      });
     }
   },
   watch: {
@@ -154,6 +185,39 @@ export default {
 <style scoped>
 #day {
   padding-top: 50px;
+}
+
+h1[data-rating='Horrible'] {
+  text-shadow: 3px 3px 2px #ff9999;
+}
+
+h1[data-rating='Bad'] {
+  text-shadow: 5px 5px 2px #ffe6e6;
+}
+
+h1[data-rating='Okay'] {
+  text-shadow: 3px 3px 2px #ffffb3;
+}
+
+h1[data-rating='Good'] {
+  text-shadow: 5px 5px 2px #d6f5d6;
+}
+
+h1[data-rating='Great'] {
+  text-shadow: 2px 2px 2px #47d147;
+}
+
+hr.past-or-present {
+  margin-bottom: 10px;
+}
+
+.ratings p {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.ratings hr {
+  margin-top: 0;
 }
 
 .reflection-editor {
