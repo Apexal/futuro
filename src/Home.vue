@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div class="row">
-      <h1>Futuro</h1><small class="right">For what is to be.</small>
+      <h1 id="title">Futuro</h1><p id="slogan">For what is to be.</p>
       <hr>
     </div>
 
@@ -33,6 +33,19 @@ export default {
 }
 </script>
 
-<style>
-  
+<style scoped>
+#title { 
+  font-size: 6em;
+  text-align: center;
+  text-shadow: 0 0 4px;
+  padding-top: 30px;
+
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#slogan {
+  text-align: center;
+  color: grey;
+}
 </style>
