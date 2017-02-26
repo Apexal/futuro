@@ -22,11 +22,24 @@ export default {
     }
   },
   mounted: function() {
+    const _this = this;
     $('.calendar').fullCalendar({
       eventSources: ['/api/activities/events', '/api/reflections/events'],
       dayClick: (date) => {
         var dateString = date.format('YYYY-MM-DD');
         this.$router.push({ name: 'day', params: { date: dateString }});
+      },
+      viewRender: function (view, element) {
+        const colors = ['#ff9999', '#ffe6e6', '#ffffb3', '#d6f5d6', '#47d147'];
+
+        _this.$http.get(`/api/ratings?start=${view.start.format('YYYY-MM-DD')}&end=${view.end.format('YYYY-MM-DD')}`).then(response => {
+          response.body.ratings.forEach((r) => {
+            $(`td.fc-day[data-date="${moment(r.date).format('YYYY-MM-DD')}"]`).css('background-color', colors[r.value - 1]);
+          });
+        }, response => {
+          alert('Error! ' + response.body.error);
+        });
+        
       }
     });
   }

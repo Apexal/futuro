@@ -16,5 +16,9 @@ module.exports = {
         title: String,
         description: { type: String, required: true },
         tags: { type: Array, default: [] }
+    },
+    Rating: {
+        date: { type: Date, required: true },
+        value: { type: Number, min: 1, max: 5, default: 4 }
     }
 };
