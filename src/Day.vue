@@ -124,9 +124,11 @@ export default {
       });
     },
     updateReflection: function(event) {
-      if(!this.reflection.description) return;
       this.$http.post('/api/reflections/' + this.$route.params.date, { reflection: this.reflection }).then(response => {
-        this.reflection = response.body.reflection;
+        if (response.body.succes)
+          this.reflection = {description: ''};
+        else
+          this.reflection = response.body.reflection;
       }, response => {
         alert('Error! ' + response.body.error);
       });

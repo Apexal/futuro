@@ -11,12 +11,13 @@ import Home from './Home.vue'
 import Day from './Day.vue'
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/days/:date', component: Day }
+  { path: '/', name: 'home', component: Home },
+  { path: '/days/:date', name: 'day', component: Day }
 ];
 
 const router = new VueRouter({
-  routes // short for routes: routes
+  routes, // short for routes: routes
+  //mode: 'history'
 });
 
 const app = new Vue({
