@@ -13,4 +13,12 @@ export default {
 <style>
 .right { float: right; }
 .left { float: left; }
+.inline { display: inline-block; }
+
+
+.reflection:not(.none) {
+  padding: 20px;
+  margin-bottom: 0;
+  background-color: #FAFAFA;
+}
 </style>

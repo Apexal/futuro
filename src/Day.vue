@@ -16,14 +16,18 @@
     </div>
 
     <div class="row">
+      <h4>Reflection</h4>
       <textarea class="reflection-editor" placeholder="Markdown is supported!" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
-      <p v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></p>
+      <div v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></div>
 
       <hr>
     </div>
-    <div class="row">
-      <div class="seven columns"><i v-show="activities.length > 0" class="status">{{ activities.length }} total</i>
-        <ol><i v-if="activities.length == 0" class="status">No activities logged for this day!</i>
+
+    <div class="row">  
+      <div class="seven columns">
+        <h4 class="inline">Activities</h4><span v-show="activities.length > 0" class="status"> {{ activities.length }} total</span>
+        <ol>
+          <i v-if="activities.length == 0" class="status">No activities logged for this day!</i>
           <activity v-else="v-else" v-for="a in activities" :activity="a" @remove="removeActivity"></activity>
         </ol>
       </div>
@@ -207,6 +211,10 @@ h1[data-rating='Great'] {
   text-shadow: 2px 2px 2px #47d147;
 }
 
+h4 {
+  font-weight: bold;
+}
+
 hr.past-or-present {
   margin-bottom: 10px;
 }
@@ -226,6 +234,7 @@ hr.past-or-present {
   max-width: 100%;
   max-height: 500px;
 }
+
 
 .status {
     color: grey;
