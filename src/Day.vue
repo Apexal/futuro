@@ -82,7 +82,7 @@ export default {
     },
     reflectionHTML: function() {
       const placeholder = this.rating ? `Why was this a ${this.rating.toLowerCase()} day?` : 'Click to add reflection.';
-      return (!this.reflection || !this.reflection.description ? placeholder : markdown.toHTML(this.reflection.description));
+      return (!this.reflection || !this.reflection.description ? placeholder : this.tagDates(markdown.toHTML(this.reflection.description)));
     },
     formattedDate: function() {
       return moment(this.$route.params.date, 'YYYY-MM-DD', true).format('dddd, MMM Do YY');
@@ -101,6 +101,17 @@ export default {
     }
   },
   methods: {
+    tagDates: function(text) {
+      const current = moment(this.$route.params.date, 'YYYY-MM-DD');
+      return text.split(' ').map(function(e) {
+        if(e.indexOf('@') == 0) {
+          const date = moment(e.substring(1), 'YYYY-MM-DD')
+          if(date.isValid()) e = `<b class='date-tag'><a title='${date.from(current)}' href='#/days/${date.format('YYYY-MM-DD')}'>${date.format('dddd, MMM Do YY')}</a></b>`;
+        }
+
+        return e;
+      }).join(' ');
+    },
     fetchData: function() {
       this.$http.get('/api/ratings/' + this.$route.params.date).then(response => {
         if (response.body.rating) this.rating = this.ratings[response.body.rating.value - 1];
