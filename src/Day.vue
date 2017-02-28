@@ -104,6 +104,7 @@ export default {
     fetchData: function() {
       this.$http.get('/api/ratings/' + this.$route.params.date).then(response => {
         if (response.body.rating) this.rating = this.ratings[response.body.rating.value - 1];
+        else this.rating = null;
       }, response => {
         alert('Error! ' + response.body.error);
       });
