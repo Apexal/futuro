@@ -1,4 +1,4 @@
-# futuro
+# Futuro
 
 > For what is to be.
 
@@ -8,11 +8,15 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
-
 # build for production with minification
 npm run build
+
+# run
+npm start
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## What
+
+**Futuro** is a simple single-page application for tracking my thoughts on each day.
+
+Each day can be rated from 1 - 5 ('Horrible' to 'Great'), can have a reflection written in Markup, and can have a list of activities done that day, each with a description.
