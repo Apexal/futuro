@@ -1,13 +1,16 @@
 <template>
   <div id="day">
     <div class="row">
-      <router-link class="button right" :to="nextDateURL">Next</router-link>
-      <router-link class="button right" :to="prevDateURL">Prev</router-link>
-      <router-link v-show="!isToday" class="button button=primary right" :to="todayURL">Today</router-link>
+      <router-link class="button right prev-button" :to="nextDateURL">Next</router-link>
+      <router-link class="button right next-button" :to="prevDateURL">Prev</router-link>
+      <router-link v-show="!isToday" class="button button-primary today-button right" :to="todayURL">Today</router-link>
       <h1 :data-rating="rating">{{ formattedDate }}</h1>
       <hr :class="{ 'past-or-present' : pastOrPresent }">
     </div>
 
+    <router-link class="mobile-next-arrow" :to="nextDateURL">&#8618;</router-link>
+    <router-link class="mobile-prev-arrow" :to="prevDateURL">&#8617;</router-link>
+    
     <div class="row ratings" v-if="pastOrPresent">
       <p>
         <button v-for="r in ratings" :class="rating == r ? 'button-primary' : ''" @click="updateRating(r)">{{ r }}</button>
@@ -53,6 +56,9 @@
     <div class="row">
       <hr/>
       <router-link class="button" to="/">Home</router-link>
+      <router-link class="button right next-button" :to="nextDateURL">Next</router-link>
+      <router-link class="button right prev-button" :to="prevDateURL">Prev</router-link>
+      <router-link v-show="!isToday" class="button button-primary today-button right" :to="todayURL">Today</router-link>
     </div>
   </div>
 </template>
@@ -185,6 +191,9 @@ export default {
       });
     }
   },
+  mounted: function() {
+    const current = moment(this.$route.params.date, 'YYYY-MM-DD');
+  },
   watch: {
     '$route' (to, from) {
       this.fetchData();
@@ -221,6 +230,48 @@ h1[data-rating='Good'] {
 
 h1[data-rating='Great'] {
   text-shadow: 2px 2px 2px #47d147;
+}
+
+.mobile-next-arrow, .mobile-prev-arrow {
+  display: none;
+  font-size: 2.5em;
+  position: fixed;
+  top: 40%;
+  color: #222;
+}
+
+@media only screen and (max-width : 768px) {
+  h1 {
+    text-align: center;
+  }
+
+  .next-button, .prev-button, .today-button {
+    display: none;
+  }
+
+  .ratings button {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mobile-next-arrow, .mobile-prev-arrow {
+    display: initial;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .mobile-prev-arrow {
+    left: 0px;
+  }
+
+  .mobile-next-arrow {
+    right: 0px;
+  }
+}
+
+.button.today-button {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 h4 {
