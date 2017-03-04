@@ -38,7 +38,14 @@
         <form id="add-activity" @submit="addActivity">
           <div class="row">
             <label for="summary">Activity Summary</label>
-            <input id="summary" type="text" name="summary" v-model="newActivity.summary" placeholder="What did you do today?" required="required"/>
+            <input id="summary" list="dailies" type="text" name="summary" v-model="newActivity.summary" placeholder="What did you do today?" required="required"/>
+            <datalist id="dailies">
+              <option value="Internet Explorer">
+              <option value="Firefox">
+              <option value="Chrome">
+              <option value="Opera">
+              <option value="Safari">
+            </datalist>
           </div>
           <div class="row">
             <label for="description">Activity Description</label>
@@ -308,6 +315,7 @@ hr.past-or-present {
   width: 100%;
   max-width: 100%;
   max-height: 500px;
+  height: 600px;
 }
 
 
