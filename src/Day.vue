@@ -38,13 +38,9 @@
         <form id="add-activity" @submit="addActivity">
           <div class="row">
             <label for="summary">Activity Summary</label>
-            <input id="summary" list="dailies" type="text" name="summary" v-model="newActivity.summary" placeholder="What did you do today?" required="required"/>
+            <input id="summary" list="dailies" type="text" name="summary" v-model="newActivity.summary" autocomplete="off" placeholder="What did you do today?" required="required"/>
             <datalist id="dailies">
-              <option value="Internet Explorer">
-              <option value="Firefox">
-              <option value="Chrome">
-              <option value="Opera">
-              <option value="Safari">
+              <option v-for="d in dailes" :value="d">
             </datalist>
           </div>
           <div class="row">
@@ -83,6 +79,11 @@ export default {
       reflection: {
         description: ''
       },
+      dailes: [
+        'Practiced Guitar',
+        'Went to Work',
+        'Reached out to ___'
+      ],
       rating: null,
       ratings: ['Horrible', 'Bad', 'Okay', 'Good', 'Great'],
       editingReflection: false
