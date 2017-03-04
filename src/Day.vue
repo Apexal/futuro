@@ -8,8 +8,8 @@
       <hr :class="{ 'past-or-present' : pastOrPresent }">
     </div>
 
-    <router-link class="mobile-next-arrow" :to="nextDateURL">&#8618;</router-link>
-    <router-link class="mobile-prev-arrow" :to="prevDateURL">&#8617;</router-link>
+    <router-link class="mobile-prev-arrow" :to="prevDateURL">&#10092;</router-link>
+    <router-link class="mobile-next-arrow" :to="nextDateURL">&#10093;</router-link>
     
     <div class="row ratings" v-if="pastOrPresent">
       <p>
@@ -234,10 +234,14 @@ h1[data-rating='Great'] {
 
 .mobile-next-arrow, .mobile-prev-arrow {
   display: none;
-  font-size: 2.5em;
+  font-size: 2.2em;
   position: fixed;
   top: 40%;
-  color: #222;
+  /*height: 15%;*/
+  padding-top: 4%;
+  padding-bottom: 5%;
+  background-color: black;
+  color: white;
 }
 
 @media only screen and (max-width : 768px) {
@@ -262,10 +266,18 @@ h1[data-rating='Great'] {
 
   .mobile-prev-arrow {
     left: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding-left: 5px;
+    padding-right: 10px;
   }
 
   .mobile-next-arrow {
     right: 0px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding-right: 5px;
+    padding-left: 10px;
   }
 }
 
