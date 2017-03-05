@@ -20,5 +20,13 @@ module.exports = {
     Rating: {
         date: { type: Date, required: true },
         value: { type: Number, min: 1, max: 5, default: 4 }
+    },
+    Person: {
+        name: {
+            nickname: String,
+            first: { type: String, required: true },
+            last: { type: String, required: true },
+            unique: { type: String, required: true }
+        }
     }
 };

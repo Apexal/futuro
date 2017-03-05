@@ -9,10 +9,12 @@ Vue.use(VueRouter)
 import App from './App.vue'
 import Home from './Home.vue'
 import Day from './Day.vue'
+import Person from './Person.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
-  { path: '/days/:date', name: 'day', component: Day }
+  { path: '/days/:date', name: 'day', component: Day },
+  { path: '/people/:name', name: 'person', component: Person }
 ];
 
 const router = new VueRouter({

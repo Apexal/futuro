@@ -79,10 +79,12 @@ export default {
       reflection: {
         description: ''
       },
+      people: [],
       dailes: [
         'Practiced Guitar',
         'Went to Work',
-        'Reached out to ___'
+        'Reached out to ___',
+        'Exercised'
       ],
       rating: null,
       ratings: ['Horrible', 'Bad', 'Okay', 'Good', 'Great'],
@@ -116,17 +118,31 @@ export default {
   },
   methods: {
     tagDates: function(text) {
+      const _this = this;
+
       const current = moment(this.$route.params.date, 'YYYY-MM-DD');
       return text.split(' ').map(function(e) {
         if(e.indexOf('@') == 0) {
           const date = moment(e.substring(1), 'YYYY-MM-DD')
-          if(date.isValid()) e = `<b class='date-tag'><a title='${date.from(current)}' href='#/days/${date.format('YYYY-MM-DD')}'>${date.format('dddd, MMM Do YY')}</a></b>`;
+          if(date.isValid()) return `<b class='date-tag'><a title='${date.from(current)}' href='#/days/${date.format('YYYY-MM-DD')}'>${date.format('dddd, MMM Do YY')}</a></b>`;
+        
+          const person = _this.people.find(p => { console.log(p.name.unique); return p.name.unique == e.substring(1); });
+          if (person) return `<b class='name-tag'><a title='${person.name.first + ' ' + person.name.last}' href='#/people/${person.name.unique}'>${person.name.nickname ? person.name.nickname : person.name.first }</a></b>`;
         }
 
         return e;
       }).join(' ');
     },
     fetchData: function() {
+      if (this.people.length == 0) {
+        this.$http.get('/api/people').then(response => {
+          if (response.body.people) this.people = response.body.people;
+          else this.people = [];
+        }, response => {
+          alert('Error! ' + response.body.error);
+        });
+      }
+
       this.$http.get('/api/ratings/' + this.$route.params.date).then(response => {
         if (response.body.rating) this.rating = this.ratings[response.body.rating.value - 1];
         else this.rating = null;
