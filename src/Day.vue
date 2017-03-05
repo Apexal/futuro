@@ -20,6 +20,9 @@
 
     <div class="row">
       <h4>Reflection</h4>
+      <div v-show="mentioned.length > 0">
+        <b>People Mentioned: </b><span><router-link v-for="p in mentioned" :title="p.name.first + ' ' + p.name.last" class="mentioned" :to="{ name: 'person', params: { name: p.name.unique }}">{{ p.name.nickname ? p.name.nickname : p.name.first }} </router-link></span>
+      </div>
       <textarea class="reflection-editor" placeholder="Markdown is supported!" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
       <div v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></div>
 
@@ -56,6 +59,7 @@
         </form>
       </div>
     </div>
+
     <div class="row">
       <hr/>
       <router-link class="button" to="/">Home</router-link>
@@ -114,6 +118,19 @@ export default {
     },
     todayURL: function() {
       return moment().format('YYYY-MM-DD');
+    },
+    mentioned: function() {
+      let mentioned = [];
+      const _this = this;
+
+      this.reflection.description.split(' ').forEach(function(e) {
+        if(e.indexOf('@') == 0) {
+          const person = _this.people.find(p => { return p.name.unique == e.substring(1); });
+          if(person && mentioned.indexOf(person) == -1) mentioned.push(person);
+        }
+      });
+
+      return mentioned;
     }
   },
   methods: {
@@ -123,11 +140,13 @@ export default {
       const current = moment(this.$route.params.date, 'YYYY-MM-DD');
       return text.split(' ').map(function(e) {
         if(e.indexOf('@') == 0) {
-          const date = moment(e.substring(1), 'YYYY-MM-DD')
-          if(date.isValid()) return `<b class='date-tag'><a title='${date.from(current)}' href='#/days/${date.format('YYYY-MM-DD')}'>${date.format('dddd, MMM Do YY')}</a></b>`;
+          const word = e.substring(1).split('<')[0];
+          const date = moment(word, 'YYYY-MM-DD');
+
+          if(date.isValid()) return `<b class='date-tag'><a title='${date.format('MMM Do YY')} | ${date.from(current)}' href='#/days/${date.format('YYYY-MM-DD')}'>${date.format('dddd')}</a></b>`;
         
-          const person = _this.people.find(p => { console.log(p.name.unique); return p.name.unique == e.substring(1); });
-          if (person) return `<b class='name-tag'><a title='${person.name.first + ' ' + person.name.last}' href='#/people/${person.name.unique}'>${person.name.nickname ? person.name.nickname : person.name.first }</a></b>`;
+          const person = _this.people.find(p => { return p.name.unique == word; });
+          if(person) { return `<b class='name-tag'><a title='${person.name.first + ' ' + person.name.last}' href='#/people/${person.name.unique}'>${person.name.nickname ? person.name.nickname : person.name.first }</a></b>`; }
         }
 
         return e;
@@ -221,6 +240,7 @@ export default {
   watch: {
     '$route' (to, from) {
       this.fetchData();
+      this.editingReflection = false;
       this.newActivity = { summary: '', description: '' };
     }
   },
@@ -334,7 +354,6 @@ hr.past-or-present {
   max-height: 500px;
   height: 600px;
 }
-
 
 .status {
     color: grey;
