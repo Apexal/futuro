@@ -351,7 +351,7 @@ hr.past-or-present {
   min-width: 100%;
   width: 100%;
   max-width: 100%;
-  max-height: 500px;
+  max-height: 1000px;
   height: 600px;
 }
 
