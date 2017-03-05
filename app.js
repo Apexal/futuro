@@ -38,58 +38,61 @@ app.use(express.static(path.join(__dirname, 'dist/assets')));
 // View helper methods
 app.locals.helpers = {};
 for (var h in helpers) {
-    if (typeof(helpers[h]) === 'function') {
-        app.locals.helpers[h] = helpers[h];
-    }
+  if (typeof(helpers[h]) === 'function') {
+    app.locals.helpers[h] = helpers[h];
+  }
 }
 
 // ALL REQUESTS PASS THROUGH HERE FIRST
 app.locals.defaultTitle = 'Futuro';
 app.locals.appDescription = package.description;
 app.use((req, res, next) => {
-    res.locals.pageTitle = app.locals.defaultTitle;
-    res.locals.pagePath = req.path;
+  res.locals.pageTitle = app.locals.defaultTitle;
+  res.locals.pagePath = req.path;
 
-    req.db = mongodb;
+  req.db = mongodb;
 
-    next();
+  next();
 });
 
 // Dynamically load routes
-const routePath = path.join(__dirname, 'server/routes') + '/';
+const routePath = path.join(__dirname, 'server/api') + '/';
 const files = recursiveReadSync(routePath);
 for (var index in files) {
-    const path = files[index].replace(`${__dirname}/server/routes/`, '');
+  const path = files[index].replace(`${__dirname}/server/api/`, '');
 
-    var router = require(files[index]);
-    var name = ( path == 'index.js' ? '' : path.replace('.js', '') );
-    try {
-        app.use('/' + name, router);
-        console.log(`Using ${path} for '/${name}'.`);
-    } catch(err) {
-        console.log(`Failed to load route '/${name}': ${err}`);
-    }
+  var router = require(files[index]);
+  var name = ( path == 'index.js' ? '' : path.replace('.js', '') );
+  try {
+    app.use('/api/' + name, router);
+    console.log(`Using ${path} for '/api/${name}'.`);
+  } catch(err) {
+    console.log(`Failed to load route '/api/${name}': ${err}`);
+  }
 }
+
+app.get('/*', (req, res, next) => {
+  res.render('layout');
+});
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // Error handler
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    console.error(err);
-    if(req.originalUrl.indexOf('/api/') > -1) return res.json({error: err});
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  console.error(err);
+  if(req.originalUrl.indexOf('/api/') > -1) return res.json({error: err});
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
-    
-    res.render('error');
+  // render the error page
+  res.render('error');
 });
 
 module.exports = app;
