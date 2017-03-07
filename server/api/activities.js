@@ -38,10 +38,7 @@ router.get('/events', (req, res, next) => {
       }
       
       res.json(events);
-    }).catch((err) => {
-      console.error(err);
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.get('/:date', (req, res, next) => {
@@ -57,9 +54,7 @@ router.get('/:date', (req, res, next) => {
     .exec()
     .then(activities => {
       res.json(activities);
-    }).catch(err => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.put('/:date', (req, res, next) => {
@@ -86,7 +81,7 @@ router.put('/:date', (req, res, next) => {
   const newActivity = new req.db.Activity(data);
 
   newActivity.save(err => {
-    if(err) return next('Missing data!');
+    if(err) return next(err);
     return res.json(newActivity);
   });
 });
@@ -106,9 +101,7 @@ router.delete('/:date', (req, res, next) => {
 
   req.db.Activity.findOne({ date: date, _id: activityId }).remove().exec().then(() => {
     res.json({ success: true });
-  }).catch(err => {
-    return res.json({ err: err });
-  });
+  }).catch(next);
 });
 
 module.exports = router;

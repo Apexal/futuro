@@ -8,9 +8,7 @@ router.get('/', (req, res, next) => {
     .exec()
     .then(people => {
       return res.json({ people });
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.get('/:name', (req, res, next) => {
@@ -21,9 +19,7 @@ router.get('/:name', (req, res, next) => {
     .exec()
     .then((person) => {
       res.json({person});
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 module.exports = router;

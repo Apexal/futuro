@@ -16,9 +16,7 @@ router.get('/', (req, res, next) => {
     .exec()
     .then(ratings => {
       return res.json({ ratings });
-    }).catch((err) => {
-      return res.json({ err: err });
-    });;
+    }).catch(next);
 });
 
 router.get('/:date', (req, res, next) => {
@@ -34,9 +32,7 @@ router.get('/:date', (req, res, next) => {
     .exec()
     .then((rating) => {
       res.json({rating});
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.post('/:date', (req, res, next) => {
@@ -52,9 +48,7 @@ router.post('/:date', (req, res, next) => {
   if(!rating.value) {
     req.db.Rating.findOne({ date: date }).remove().exec().then(() => {
       res.json({ success: true });
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
   } else {
     req.db.Rating.findOne({ date: date }).exec().then((r) => {
       if(!r) {

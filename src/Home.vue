@@ -37,7 +37,7 @@ export default {
             $(`td.fc-day[data-date="${moment(r.date).format('YYYY-MM-DD')}"]`).css('background-color', colors[r.value - 1]);
           });
         }, response => {
-          alert('Error! ' + response.body.error);
+          alert('Error fetching ratings! ' + response.body.err);
         });
         
       }

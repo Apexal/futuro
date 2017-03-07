@@ -158,7 +158,7 @@ export default {
           if (response.body.people) this.people = response.body.people;
           else this.people = [];
         }, response => {
-          alert('Error! ' + response.body.error);
+          alert('Error fetching people! ' + response.body.err);
         });
       }
 
@@ -166,20 +166,20 @@ export default {
         if (response.body.rating) this.rating = this.ratings[response.body.rating.value - 1];
         else this.rating = null;
       }, response => {
-        alert('Error! ' + response.body.error);
+        alert('Error fetching rating! ' + response.body.err);
       });
 
       this.$http.get('/api/activities/' + this.$route.params.date).then(response => {
         this.activities = response.body;
       }, response => {
-        alert('Error! ' + response.body.error);
+        alert('Error fetching activities! ' + response.body.err);
       });
 
       this.$http.get('/api/reflections/' + this.$route.params.date).then(response => {
         this.reflection = response.body.reflection;
         if(!this.reflection) this.reflection = {description: ''};
       }, response => {
-        alert('Error! ' + response.body.error);
+        alert('Error fetching reflection! ' + response.body.err);
       });
     },
     toggleAgenda: function() {

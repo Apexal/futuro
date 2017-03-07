@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   console.error(err);
-  if(req.originalUrl.indexOf('/api/') > -1) return res.json({error: err});
+  if(req.originalUrl.indexOf('/api/') > -1) return res.json({err: err.message});
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

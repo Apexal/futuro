@@ -31,7 +31,7 @@ export default {
       this.$http.get('/api/people/' + this.$route.params.name).then(response => {
         if(response.body.person) this.person = response.body.person;
       }, response => {
-        alert('Error! ' + response.body.error);
+        alert('Error fetching person! ' + response.body.err);
       });
     }
   },

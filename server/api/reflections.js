@@ -28,10 +28,7 @@ router.get('/events', (req, res, next) => {
       });
 
       res.json(events);
-    }).catch((err) => {
-      console.error(err);
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.get('/:date', (req, res, next) => {
@@ -47,9 +44,7 @@ router.get('/:date', (req, res, next) => {
     .exec()
     .then((reflection) => {
       res.json({reflection});
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
 });
 
 router.post('/:date', (req, res, next) => {
@@ -65,9 +60,7 @@ router.post('/:date', (req, res, next) => {
   if(!reflection.description) {
     req.db.Reflection.findOne({ date: date }).remove().exec().then(() => {
       res.json({ success: true });
-    }).catch((err) => {
-      return res.json({ err: err });
-    });
+    }).catch(next);
   } else {
     req.db.Reflection.findOne({ date: date }).exec().then((r) => {
       if(!r) {
