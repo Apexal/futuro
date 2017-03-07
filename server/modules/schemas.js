@@ -27,6 +27,14 @@ module.exports = {
             first: { type: String, required: true },
             last: { type: String, required: true },
             unique: { type: String, required: true }
-        }
+        },
+        gender: { type: String, required: true },
+        title: String,
+        relation: { type: String, required: true },
+        description: String,
+        levels: {
+
+        },
+        tags: { type: [ String ], default: [] }
     }
 };

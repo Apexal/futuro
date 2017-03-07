@@ -38,7 +38,6 @@ export default {
   mounted: function() {
     
   },
-  
   created: function() {
     // Before the element is rendered get the proper data
     this.fetchData();
