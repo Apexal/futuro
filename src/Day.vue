@@ -19,12 +19,13 @@
     </div>
 
     <div class="row">
+    <small :title="createdAt.long" class="right status">updated {{ createdAt.short }}</small>
       <h4>Reflection</h4>
       <div v-show="mentioned.length > 0">
         <b>People Mentioned: </b><span><router-link v-for="p in mentioned" :title="p.name.first + ' ' + p.name.last" class="mentioned" :to="{ name: 'person', params: { name: p.name.unique }}">{{ p.name.nickname ? p.name.nickname : p.name.first }} </router-link></span>
       </div>
       <textarea class="reflection-editor" placeholder="Markdown is supported!" v-if="editingReflection" v-model="reflection.description" @blur="doneEditingReflection"></textarea>
-      <div v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></div>
+      <div title="Click to edit!" v-else v-html="reflectionHTML" :class="'reflection' + (!this.reflection || !this.reflection.description ? ' none' : '')" @click="editingReflection = !editingReflection"></div>
 
       <hr>
     </div>
@@ -97,6 +98,12 @@ export default {
   },
   components: { 'activity': Activity },
   computed: {
+    createdAt: function() {
+      return {
+        short: moment(this.reflection.updated_at).fromNow(),
+        long: moment(this.reflection.updated_at).format('dddd, MMMM Do YYYY, h:mm a')
+      };
+    },
     pastOrPresent: function() {
       return moment(this.$route.params.date, 'YYYY-MM-DD').isSameOrBefore(moment().startOf('day'));
     },
