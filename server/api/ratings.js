@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:date', (req, res, next) => {
-  const dateString = res.locals.dateString = req.params.date;
+  const dateString = req.params.date;
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid())
     return next('Invalid date!');

@@ -5,7 +5,6 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const helpers = require('./server/modules/helpers.js');
 const fs = require('fs');
 const recursiveReadSync = require('recursive-readdir-sync');
 const session = require('express-session');
@@ -34,14 +33,6 @@ app.use(session({
   cookie: { secure: true, maxAge: 1000 * 60 * 60 * 5 }
 }))
 app.use(express.static(path.join(__dirname, 'dist/assets')));
-
-// View helper methods
-app.locals.helpers = {};
-for (var h in helpers) {
-  if (typeof(helpers[h]) === 'function') {
-    app.locals.helpers[h] = helpers[h];
-  }
-}
 
 // ALL REQUESTS PASS THROUGH HERE FIRST
 app.locals.defaultTitle = 'Futuro';

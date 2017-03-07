@@ -32,12 +32,12 @@ router.get('/events', (req, res, next) => {
 });
 
 router.get('/:date', (req, res, next) => {
-  const dateString = res.locals.dateString = req.params.date;
+  const dateString = req.params.date;
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid())
     return next('Invalid date!');
 
-  var date = res.locals.date = moment(dateString, 'YYYY-MM-DD', true);
+  var date = moment(dateString, 'YYYY-MM-DD', true);
   
   req.db.Reflection.findOne({ date: date })
     .lean()
@@ -49,7 +49,7 @@ router.get('/:date', (req, res, next) => {
 
 router.post('/:date', (req, res, next) => {
   // Take forever to validate the date query
-  const dateString = res.locals.dateString = req.params.date;
+  const dateString = req.params.date;
 
   if(!moment(dateString, 'YYYY-MM-DD', true).isValid()) return next('Invalid date!');
 
