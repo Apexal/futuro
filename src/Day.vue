@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-    <small :title="createdAt.long" class="right status">updated {{ createdAt.short }}</small>
+    <small v-show="!!this.reflection && !!this.reflection.description" :title="createdAt.long" class="right status">updated {{ createdAt.short }}</small>
       <h4>Reflection</h4>
       <div v-show="mentioned.length > 0">
         <b>People Mentioned: </b><span><router-link v-for="p in mentioned" :title="p.name.first + ' ' + p.name.last" class="mentioned" :to="{ name: 'person', params: { name: p.name.unique }}">{{ p.name.nickname ? p.name.nickname : p.name.first }} </router-link></span>
