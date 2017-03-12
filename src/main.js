@@ -10,10 +10,12 @@ import App from './App.vue'
 import Home from './Home.vue'
 import Day from './Day.vue'
 import Person from './Person.vue'
+import People from './People.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
   { path: '/days/:date', name: 'day', component: Day },
+  { path: '/people', name: 'people', component: People },
   { path: '/people/:name', name: 'person', component: Person }
 ];
 

@@ -21,4 +21,8 @@ export default {
   margin-bottom: 0;
   background-color: #FAFAFA;
 }
+
+.status {
+  color: grey;
+}
 </style>

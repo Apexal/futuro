@@ -362,10 +362,6 @@ hr.past-or-present {
   height: 600px;
 }
 
-.status {
-    color: grey;
-}
-
 .reflection.none {
   color: grey;
   font-style: italic;
